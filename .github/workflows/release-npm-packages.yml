@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  GITHUB_TOKEN: ${{ secrets.['token-components'] }}
+  GITHUB_TOKEN: ${{ secrets.TOKEN_COMPONENTS }}
 
 jobs:
   release:
@@ -29,7 +29,6 @@ jobs:
       - name: Release Link
         run: |
           echo ${{env.GITHUB_TOKEN}}
-          echo ${{secrets.['token-components']}}
           echo ${{secrets.TOKEN_COMPONENTS]}}
           echo ${{secrets.TOKEN-COMPONENTS]}}
           cd components/management/link
