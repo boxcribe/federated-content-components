@@ -1,0 +1,32 @@
+name: Publish NPM Packages
+
+on:
+  push:
+    paths:
+      - 'components/management/link/**'
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Release Link
+        run: |
+          cd components/management/link
+          npm ci && npm run build && npx semantic-release
