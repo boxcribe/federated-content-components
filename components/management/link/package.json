@@ -1,6 +1,6 @@
 {
   "name": "@boxcribe/link",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Boxcribe Link Component",
   "main": "index.js",
   "repository": "git://github.com/boxcribe/federated-content-components.git",
