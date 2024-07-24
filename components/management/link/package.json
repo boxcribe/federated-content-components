@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Boxcribe Link Component",
   "main": "index.js",
+  "repository": "git://github.com/boxcribe/federated-content-components.git",
   "scripts": {
     "start": "react-scripts start",
     "build": "babel src --out-dir dist"

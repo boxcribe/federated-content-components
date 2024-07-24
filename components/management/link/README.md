@@ -1,2 +1,2 @@
 # federated-content-components
-React Components
+Boxcribe Link - React Component
