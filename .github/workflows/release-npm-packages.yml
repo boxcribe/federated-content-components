@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.token-components }}
 
 jobs:
   release:
@@ -28,5 +28,6 @@ jobs:
 
       - name: Release Link
         run: |
+          echo ${{env.GITHUB_TOKEN}}
           cd components/management/link
           npm ci && npm run build && npx semantic-release
