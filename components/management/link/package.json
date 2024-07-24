@@ -4,6 +4,10 @@
   "description": "Boxcribe Link Component",
   "main": "index.js",
   "repositoryUrl": "https://github.com/boxcribe/federated-content-components.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/boxcribe/federated-content-components.git"
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/",
     "access": "public"
