@@ -13,26 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@semantic-release/git": "10.0.1"
-  },
-  "release": {
-    "branches": [
-      "main"
-    ],
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "package.json",
-            "package-lock.json"
-          ]
-        }
-      ]
-    ],
-    "extends": "semantic-release-monorepo"
+    "@semantic-release/git": "10.0.1",
+    "@semantic-release/github": "10.1.1"
   }
 }
