@@ -40,7 +40,6 @@ function titleCase(str) {
 }
 
 export default function BoxcribeLink() {
-  console.log("BoxcribeLink");
   const [state, setState] = useState({
     loading: true,
     success: "",

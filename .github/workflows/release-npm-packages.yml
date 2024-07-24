@@ -9,7 +9,9 @@ on:
   workflow_dispatch:
 
 env:
+  NODE_AUTH_TOKEN: ${{ secrets.TOKEN_COMPONENTS }}
   GITHUB_TOKEN: ${{ secrets.TOKEN_COMPONENTS }}
+  NPM_TOKEN: ${{ secrets.TOKEN_COMPONENTS }}
 
 jobs:
   release:
