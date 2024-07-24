@@ -3,9 +3,10 @@
   "version": "1.0.1",
   "description": "Boxcribe Link Component",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/boxcribe/federated-content-components.git"
+  "repositoryUrl": "https://github.com/boxcribe/federated-content-components.git",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/",
+    "access": "public"
   },
   "scripts": {
     "start": "react-scripts start",
