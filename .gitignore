@@ -9,6 +9,9 @@ yarn.lock
 build
 dist
 
+# .env.example files
+.env*
+
 # misc
 .eslintcache
 .DS_Store
