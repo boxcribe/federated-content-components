@@ -1,0 +1,74 @@
+{
+  "name": "@boxcribe/search-activities",
+  "version": "1.0.0",
+  "description": "Boxcribe Search Activities Component",
+  "main": "index.js",
+  "repositoryUrl": "https://github.com/boxcribe/federated-content-components.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/boxcribe/federated-content-components.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/",
+    "access": "public"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "babel src --out-dir dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-google-places-autocomplete": "4.0.1",
+    "react-multi-date-picker": "4.5.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.24.8",
+    "@babel/core": "7.24.9",
+    "@babel/preset-env": "7.24.8",
+    "@babel/preset-react": "7.24.7",
+    "prettier": "3.3.3",
+    "react-scripts": "5.0.1",
+    "semantic-release": "24.0.0",
+    "semantic-release-monorepo": "8.0.2"
+  },
+  "engines": {
+    "node": ">=10",
+    "npm": ">=6"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json",
+            "package-lock.json"
+          ]
+        }
+      ],
+      "@semantic-release/github"
+    ],
+    "extends": "semantic-release-monorepo"
+  }
+}
