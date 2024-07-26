@@ -2,7 +2,7 @@
   "name": "@boxcribe/search-activities",
   "version": "1.0.1",
   "description": "Boxcribe Search Activities Component",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repositoryUrl": "https://github.com/boxcribe/federated-content-components.git",
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir dist --copy-files"
   },
   "author": "",
   "license": "ISC",
