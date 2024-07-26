@@ -4,7 +4,7 @@ import GooglePlacesAutocomplete, {
 } from "react-google-places-autocomplete";
 import "./css/style.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import { useState } from "react";
+import React, { useState } from "react";
 import cilLocationPin from "./assets/icons/cil-location-pin.svg";
 import cilCalendar from "./assets/icons/cil-calendar.svg";
 import { searchOffers } from "./api/api";

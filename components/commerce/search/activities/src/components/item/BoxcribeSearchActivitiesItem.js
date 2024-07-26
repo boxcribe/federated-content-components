@@ -1,3 +1,4 @@
+import React from "react";
 import BoxcribeSearchActivitiesLoader from "../loader/BoxcribeSearchActivitiesLoader";
 import LinesEllipsis from "react-lines-ellipsis";
 import { cisThumbUpSvg } from "../../assets/js/cisThumbUpSvg";
