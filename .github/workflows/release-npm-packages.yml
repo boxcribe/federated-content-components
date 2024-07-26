@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'components/management/link/**'
+      - 'components/commerce/search/activities/**'
     branches:
       - main
   workflow_dispatch:
@@ -31,4 +32,9 @@ jobs:
       - name: Release Link
         run: |
           cd components/management/link
+          npm ci && npm run build && npx semantic-release
+
+      - name: Release Search Activities
+        run: |
+          cd components/commerce/search/activities
           npm ci && npm run build && npx semantic-release
