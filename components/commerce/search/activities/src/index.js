@@ -1,4 +1,3 @@
-import { createRoot } from "react-dom/client";
 import GooglePlacesAutocomplete, {
   geocodeByPlaceId,
   getLatLng,
@@ -155,8 +154,3 @@ export default function BoxcribeSearchActivities() {
     </div>
   );
 }
-
-// TODO: remove before publish
-createRoot(document.getElementById("root")).render(
-  <BoxcribeSearchActivities />,
-);
