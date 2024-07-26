@@ -1,6 +1,3 @@
 {
-  "presets": ["@babel/preset-react", "@babel/preset-env"],
-  "ignore": [
-    "src/index.dev.js"
-  ]
+  "presets": ["@babel/preset-react", "@babel/preset-env"]
 }
