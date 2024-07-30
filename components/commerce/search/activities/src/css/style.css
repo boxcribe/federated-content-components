@@ -114,6 +114,7 @@
     margin: 2px 0 2px 2px;
     top: 0;
     left: 0;
+    z-index: 2;
   }
 
   .rmdp-input {
@@ -130,7 +131,6 @@
     border: 2px solid #EBEDEF;
     border-radius: 0.375rem;
     box-shadow: 0 0 0;
-    background-color: transparent;
     padding-left: 40px;
     min-height: 41px;
 
