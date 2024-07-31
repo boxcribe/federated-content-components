@@ -16,7 +16,7 @@
     "start": "react-scripts start",
     "build": "babel src --out-dir dist --copy-files"
   },
-  "author": "",
+  "author": "Boxcribe",
   "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
