@@ -4,7 +4,7 @@ import GooglePlacesAutocomplete, {
 } from "react-google-places-autocomplete";
 import "./css/style.css";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import cilLocationPin from "./assets/icons/cil-location-pin.svg";
 import cilCalendar from "./assets/icons/cil-calendar.svg";
 import { searchOffers } from "./api/api";
@@ -26,6 +26,10 @@ const defaultEndDate = new DateObject().add(7, "day");
 const defaultItems = Array.from({ length: 9 }, (_, index) => ({
   offer_id: index,
 }));
+const initialSortAndFilter = {
+  sort_by: "rating",
+  sort_order: "desc",
+};
 
 export default function BoxcribeSearchActivities({ apiKey }) {
   const [date, setDate] = useState([defaultStartDate, defaultEndDate]);
@@ -42,6 +46,13 @@ export default function BoxcribeSearchActivities({ apiKey }) {
   });
   const [display, setDisplay] = useState(DISPLAY_OPTIONS.GRID);
   const [showFilter, setShowFilter] = useState(false);
+  const [sortAndFilter, setSortAndFilter] = useState(initialSortAndFilter);
+
+  useEffect(() => {
+    if (state.firstSearch || !state.location.lat || !state.location.lng) return;
+
+    loadItems();
+  }, [sortAndFilter]);
 
   async function handleLocationChange(searchLocation) {
     if (!searchLocation?.value.place_id) return;
@@ -55,10 +66,11 @@ export default function BoxcribeSearchActivities({ apiKey }) {
     });
   }
 
-  async function loadItems(options = { sort: {}, filter: {} }) {
+  async function loadItems(firstSearch = false) {
     const [startDate, endDate] = date;
 
     setAnyState(setState, {
+      firstSearch,
       loading: true,
       items: defaultItems,
       notFound: false,
@@ -74,12 +86,9 @@ export default function BoxcribeSearchActivities({ apiKey }) {
           end_date: endDate.format("YYYY-MM-DD"),
           adults: 1,
           children: 0,
-          sort_by: "rating",
-          sort_order: "desc",
           page: 1,
           limit: 50,
-          ...options.sort,
-          ...options.filter,
+          ...sortAndFilter,
         },
         apiKey,
       );
@@ -109,13 +118,12 @@ export default function BoxcribeSearchActivities({ apiKey }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    await loadItems();
+    setSortAndFilter(initialSortAndFilter);
+    await loadItems(true);
   }
 
   async function handleSortChange(sort) {
-    await loadItems({
-      sort,
-    });
+    setAnyState(setSortAndFilter, sort);
   }
 
   function handleDisplayChange(value) {
@@ -123,9 +131,7 @@ export default function BoxcribeSearchActivities({ apiKey }) {
   }
 
   async function handleFilterChange(filter) {
-    await loadItems({
-      filter,
-    });
+    setAnyState(setSortAndFilter, filter);
   }
 
   function handleResetFilter() {
@@ -211,15 +217,20 @@ export default function BoxcribeSearchActivities({ apiKey }) {
             </button>
           )}
           <BoxcribeSearchActivitiesSortBy onChange={handleSortChange} />
-          <BoxcribeSearchActivitiesDisplay onChange={handleDisplayChange} />
+          <BoxcribeSearchActivitiesDisplay
+            initialState={display}
+            onChange={handleDisplayChange}
+          />
         </div>
       )}
       <div className="boxcribe-search-activities__body">
-        <BoxcribeSearchActivitiesFilter
-          show={showFilter}
-          onChange={handleFilterChange}
-          reset={state.resetFilter}
-        />
+        {!state.firstSearch && (
+          <BoxcribeSearchActivitiesFilter
+            show={showFilter}
+            onChange={handleFilterChange}
+            reset={state.resetFilter}
+          />
+        )}
         <div className={`boxcribe-search-activities__content ${display}`}>
           {!state.notFound &&
             state.items.map((item) => (

@@ -7,8 +7,11 @@ export const DISPLAY_OPTIONS = {
   LIST: "list",
 };
 
-export default function BoxcribeSearchActivitiesDisplay({ onChange }) {
-  const [state, setState] = useState(DISPLAY_OPTIONS.GRID);
+export default function BoxcribeSearchActivitiesDisplay({
+  initialState = DISPLAY_OPTIONS.GRID,
+  onChange,
+}) {
+  const [state, setState] = useState(initialState);
 
   function handleChange(value) {
     if (value === state) return;
