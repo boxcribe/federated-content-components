@@ -46,26 +46,27 @@ export default function BoxcribeSearchActivityItem({ loading = false, item }) {
       {loading && <BoxcribeSearchActivitiesLoader />}
       {!loading && (
         <>
-          <img
-            src={item.tour_images[0]}
-            alt=""
+          <div
             className="boxcribe-search-activities__item-image"
-          />
-          <div className="boxcribe-search-activities__item-title">
-            {item.tour_name}
+            style={{ backgroundImage: `url(${item.tour_images[0]})` }}
+          >
+            {/*<img src={item.tour_images[0]} alt="Tour image" />*/}
           </div>
-          <div className="boxcribe-search-activities__item-description">
-            <LinesEllipsis
-              text={item.tour_description}
-              maxLine={6}
-              basedOn="words"
-            />
-          </div>
-          <div className="boxcribe-search-activities__item-footer">
-            {getItemRatingContent()}
-            <div className="boxcribe-search-activities__item-price">
-              ${item.offer_price.toFixed(2)}
+          <div className="boxcribe-search-activities__item-details">
+            <div className="boxcribe-search-activities__item-title">
+              {item.tour_name}
             </div>
+            <div className="boxcribe-search-activities__item-description">
+              <LinesEllipsis
+                text={item.tour_description}
+                maxLine={6}
+                basedOn="words"
+              />
+            </div>
+            {getItemRatingContent()}
+          </div>
+          <div className="boxcribe-search-activities__item-price">
+            ${item.offer_price.toFixed(2)}
           </div>
         </>
       )}

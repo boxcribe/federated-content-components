@@ -9,13 +9,17 @@ import cilLocationPin from "./assets/icons/cil-location-pin.svg";
 import cilCalendar from "./assets/icons/cil-calendar.svg";
 import { searchOffers } from "./api/api";
 import BoxcribeSearchActivityItem from "./components/item/BoxcribeSearchActivitiesItem";
-
-function setAnyState(setStateFn, partialUpdatedState) {
-  setStateFn((prevState) => ({
-    ...prevState,
-    ...partialUpdatedState,
-  }));
-}
+import { createRoot } from "react-dom/client";
+import { cilFilter } from "./assets/js/cilFilter";
+import BoxcribeSearchActivitiesSortBy from "./components/sort-by/BoxcribeSearchActivitiesSortBy";
+import BoxcribeSearchActivitiesDisplay, {
+  DISPLAY_OPTIONS,
+} from "./components/display/BoxcribeSearchActivitiesDisplay";
+import BoxcribeSearchActivitiesFilter from "./components/filter/BoxcribeSearchActivitiesFilter";
+import { setAnyState } from "./state/state";
+import { cilSearch } from "./assets/js/cilSearch";
+import { cilFilterX } from "./assets/js/cilFilterX";
+import { cilClearAll } from "./assets/js/cilClearAll";
 
 const todayDate = new DateObject();
 const defaultStartDate = new DateObject().add(1, "day");
@@ -33,7 +37,12 @@ export default function BoxcribeSearchActivities({ apiKey }) {
       lng: 0,
     },
     items: [],
+    notFound: false,
+    firstSearch: true,
+    resetFilter: null,
   });
+  const [display, setDisplay] = useState(DISPLAY_OPTIONS.GRID);
+  const [showFilter, setShowFilter] = useState(false);
 
   async function handleLocationChange(searchLocation) {
     if (!searchLocation?.value.place_id) return;
@@ -47,13 +56,13 @@ export default function BoxcribeSearchActivities({ apiKey }) {
     });
   }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
+  async function loadItems(options = { sort: {}, filter: {} }) {
     const [startDate, endDate] = date;
 
     setAnyState(setState, {
       loading: true,
       items: defaultItems,
+      notFound: false,
     });
 
     try {
@@ -61,7 +70,7 @@ export default function BoxcribeSearchActivities({ apiKey }) {
         {
           location_latitude: state.location.lat,
           location_longitude: state.location.lng,
-          location_radius: 10,
+          location_radius: 100,
           start_date: startDate.format("YYYY-MM-DD"),
           end_date: endDate.format("YYYY-MM-DD"),
           adults: 1,
@@ -69,21 +78,61 @@ export default function BoxcribeSearchActivities({ apiKey }) {
           sort_by: "rating",
           sort_order: "desc",
           page: 1,
-          limit: 10,
+          limit: 50,
+          ...options.sort,
+          ...options.filter,
         },
         apiKey,
       );
 
-      return setAnyState(setState, {
-        loading: false,
-        items: response?.offers ?? [],
-      });
+      if (response?.offers) {
+        return setAnyState(setState, {
+          loading: false,
+          firstSearch: false,
+          items: response?.offers ?? [],
+        });
+      }
+
+      if (response?.message === "No offers found") {
+        return setAnyState(setState, {
+          loading: false,
+          items: [],
+          notFound: true,
+        });
+      }
     } catch (e) {
       console.error(`Error while searching: ${e.message}`);
       return setAnyState(setState, {
         loading: false,
       });
     }
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    await loadItems();
+  }
+
+  async function handleSortChange(sort) {
+    await loadItems({
+      sort,
+    });
+  }
+
+  function handleDisplayChange(value) {
+    setDisplay(value);
+  }
+
+  async function handleFilterChange(filter) {
+    await loadItems({
+      filter,
+    });
+  }
+
+  function handleResetFilter() {
+    setAnyState(setState, {
+      resetFilter: Math.random(),
+    });
   }
 
   return (
@@ -103,7 +152,7 @@ export default function BoxcribeSearchActivities({ apiKey }) {
               />
             </div>
             <GooglePlacesAutocomplete
-              apiKey="AIzaSyA57JGyAU25CddeRjYE4oiZkUj9bK3oLPU"
+              apiKey="AIzaSyC8_8ESW8I-39vlbVUBU222yEEEhgiZV1U"
               debounce={200}
               selectProps={{
                 placeholder: "Where are you going?",
@@ -145,15 +194,58 @@ export default function BoxcribeSearchActivities({ apiKey }) {
           </div>
         </div>
       </form>
-      <div className="boxcribe-search-activities__content">
-        {state.items.map((item) => (
-          <BoxcribeSearchActivityItem
-            key={item.offer_id}
-            loading={state.loading}
-            item={item}
-          />
-        ))}
+      {!state.firstSearch && (state.location.lat || state.location.lng) && (
+        <div className="boxcribe-search-activities__controls">
+          <button
+            className={`boxcribe-search-activities__btn-ghost-primary boxcribe-search-activities__controls-filter ${showFilter ? "active" : ""}`}
+            onClick={() => setShowFilter(!showFilter)}
+          >
+            {showFilter ? cilFilterX : cilFilter}
+            Filter
+          </button>
+          {showFilter && (
+            <button
+              className="boxcribe-search-activities__btn-ghost-primary boxcribe-search-activities__controls-filter"
+              onClick={handleResetFilter}
+            >
+              {cilClearAll} Clear All
+            </button>
+          )}
+          <BoxcribeSearchActivitiesSortBy onChange={handleSortChange} />
+          <BoxcribeSearchActivitiesDisplay onChange={handleDisplayChange} />
+        </div>
+      )}
+      <div className="boxcribe-search-activities__body">
+        <BoxcribeSearchActivitiesFilter
+          show={showFilter}
+          onChange={handleFilterChange}
+          reset={state.resetFilter}
+        />
+        <div className={`boxcribe-search-activities__content ${display}`}>
+          {!state.notFound &&
+            state.items.map((item) => (
+              <BoxcribeSearchActivityItem
+                key={item.offer_id}
+                loading={state.loading}
+                item={item}
+              />
+            ))}
+          {state.notFound && (
+            <div className="boxcribe-search-activities__no-results-found">
+              {cilSearch}
+              <h1>
+                We didn't find any results that met your search criteria.
+                <br />
+                Please try again.
+              </h1>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 }
+
+createRoot(document.getElementById("root")).render(
+  <BoxcribeSearchActivities />,
+);
