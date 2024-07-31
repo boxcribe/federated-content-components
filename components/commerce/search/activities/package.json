@@ -1,6 +1,6 @@
 {
   "name": "@boxcribe/search-activities",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Boxcribe Search Activities Component",
   "main": "dist/index.js",
   "repositoryUrl": "https://github.com/boxcribe/federated-content-components.git",
