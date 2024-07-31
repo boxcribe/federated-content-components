@@ -9,7 +9,6 @@ import cilLocationPin from "./assets/icons/cil-location-pin.svg";
 import cilCalendar from "./assets/icons/cil-calendar.svg";
 import { searchOffers } from "./api/api";
 import BoxcribeSearchActivityItem from "./components/item/BoxcribeSearchActivitiesItem";
-import { createRoot } from "react-dom/client";
 import { cilFilter } from "./assets/js/cilFilter";
 import BoxcribeSearchActivitiesSortBy from "./components/sort-by/BoxcribeSearchActivitiesSortBy";
 import BoxcribeSearchActivitiesDisplay, {
@@ -245,7 +244,3 @@ export default function BoxcribeSearchActivities({ apiKey }) {
     </div>
   );
 }
-
-createRoot(document.getElementById("root")).render(
-  <BoxcribeSearchActivities />,
-);
