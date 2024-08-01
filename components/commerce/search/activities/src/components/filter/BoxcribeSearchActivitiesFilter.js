@@ -140,7 +140,7 @@ export default function BoxcribeSearchActivitiesFilter({
               className="boxcribe-search-activities__filter__price-range-track"
               style={{
                 ...props.style,
-                height: "36px",
+                height: "28px",
                 display: "flex",
                 width: "100%",
               }}
@@ -170,8 +170,8 @@ export default function BoxcribeSearchActivitiesFilter({
               key={props.key}
               style={{
                 ...props.style,
-                height: "36px",
-                width: "36px",
+                height: "28px",
+                width: "28px",
                 borderRadius: "50%",
                 border: "2px solid #96A0AF",
                 backgroundColor: "#FFF",
@@ -241,7 +241,7 @@ export default function BoxcribeSearchActivitiesFilter({
               onTouchStart={props.onTouchStart}
               style={{
                 ...props.style,
-                height: "36px",
+                height: "28px",
                 display: "flex",
                 width: "100%",
               }}
@@ -271,8 +271,8 @@ export default function BoxcribeSearchActivitiesFilter({
               key={props.key}
               style={{
                 ...props.style,
-                height: "36px",
-                width: "36px",
+                height: "28px",
+                width: "28px",
                 borderRadius: "50%",
                 border: "2px solid #96A0AF",
                 backgroundColor: "#FFF",

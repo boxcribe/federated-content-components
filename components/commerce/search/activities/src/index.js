@@ -19,6 +19,8 @@ import { setAnyState } from "./state/state";
 import { cilSearch } from "./assets/js/cilSearch";
 import { cilFilterX } from "./assets/js/cilFilterX";
 import { cilClearAll } from "./assets/js/cilClearAll";
+import ReactPaginate from "react-paginate";
+import BoxcribeSearchActivitiesMultiSelect from "./components/multiselect/BoxcribeSearchActivitiesMultiSelect";
 
 const todayDate = new DateObject();
 const defaultStartDate = new DateObject().add(1, "day");
@@ -30,6 +32,28 @@ const initialSortAndFilter = {
   sort_by: "rating",
   sort_order: "desc",
 };
+const itemsPerPageOptions = [
+  {
+    label: 5,
+    value: 5,
+    selected: false,
+  },
+  {
+    label: 10,
+    value: 10,
+    selected: true,
+  },
+  {
+    label: 20,
+    value: 20,
+    selected: false,
+  },
+  {
+    label: 50,
+    value: 50,
+    selected: false,
+  },
+];
 
 export default function BoxcribeSearchActivities({ apiKey }) {
   const [date, setDate] = useState([defaultStartDate, defaultEndDate]);
@@ -40,6 +64,9 @@ export default function BoxcribeSearchActivities({ apiKey }) {
       lng: 0,
     },
     items: [],
+    limit: 10,
+    page: 1,
+    pageCount: 0,
     notFound: false,
     firstSearch: true,
     resetFilter: null,
@@ -52,7 +79,7 @@ export default function BoxcribeSearchActivities({ apiKey }) {
     if (state.firstSearch || !state.location.lat || !state.location.lng) return;
 
     loadItems();
-  }, [sortAndFilter]);
+  }, [sortAndFilter, state.limit, state.page]);
 
   async function handleLocationChange(searchLocation) {
     if (!searchLocation?.value.place_id) return;
@@ -86,8 +113,8 @@ export default function BoxcribeSearchActivities({ apiKey }) {
           end_date: endDate.format("YYYY-MM-DD"),
           adults: 1,
           children: 0,
-          page: 1,
-          limit: 50,
+          page: state.page,
+          limit: state.limit,
           ...sortAndFilter,
         },
         apiKey,
@@ -98,6 +125,7 @@ export default function BoxcribeSearchActivities({ apiKey }) {
           loading: false,
           firstSearch: false,
           items: response?.offers ?? [],
+          pageCount: Math.ceil(response.total / response.limit) - 1,
         });
       }
 
@@ -137,6 +165,18 @@ export default function BoxcribeSearchActivities({ apiKey }) {
   function handleResetFilter() {
     setAnyState(setState, {
       resetFilter: Math.random(),
+    });
+  }
+
+  function handleItemsPerPageChange(limit) {
+    setAnyState(setState, {
+      limit,
+    });
+  }
+
+  function handlePageChange({ selected }) {
+    setAnyState(setState, {
+      page: selected + 1,
     });
   }
 
@@ -252,6 +292,23 @@ export default function BoxcribeSearchActivities({ apiKey }) {
           )}
         </div>
       </div>
+      {!state.firstSearch && (
+        <div className="boxcribe-search-activities__pagination">
+          <ReactPaginate
+            previousLabel={null}
+            nextLabel={null}
+            pageCount={state.pageCount}
+            pageRangeDisplayed={3}
+            marginPagesDisplayed={1}
+            activeClassName="active"
+            onPageChange={handlePageChange}
+          />
+          <BoxcribeSearchActivitiesMultiSelect
+            options={itemsPerPageOptions}
+            onChange={handleItemsPerPageChange}
+          />
+        </div>
+      )}
     </div>
   );
 }
